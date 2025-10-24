@@ -1,82 +1,13 @@
-pipeline {
-    agent any
-    environment {
-        // frontend variables
-        FRONTEND_TESTNET_STAGING_BUNDLE_PATH = "$WORKSPACE/packages/frontend/dist_testnet_staging"
-        FRONTEND_TESTNET_BUNDLE_PATH = "$WORKSPACE/packages/frontend/dist_testnet"
-        FRONTEND_MAINNET_STAGING_BUNDLE_PATH = "$WORKSPACE/packages/frontend/dist_mainnet_staging"
-        FRONTEND_MAINNET_BUNDLE_PATH = "$WORKSPACE/packages/frontend/dist_mainnet"
+`~?
+    `~?
+    `~?
+    `~?
+            `~?
+    `~?
+    `~?       `~?
 
-        // aws configuration
-        AWS_CREDENTIALS = 'aws-credentials-password'
-        AWS_REGION = 'us-west-2'
-        TESTNET_AWS_ROLE = credentials('testnet-assumed-role')
-        TESTNET_AWS_ACCOUNT_ID = credentials('testnet-mnw-account-id')
-        MAINNET_AWS_ROLE = credentials('mainnet-assumed-role')
-        MAINNET_AWS_ACCOUNT_ID = credentials('mainnet-mnw-account-id')
-
-        // s3 buckets
-        TESTNET_PR_PREVIEW_STATIC_SITE_BUCKET = credentials('testnet-pr-previews-static-website')
-        TESTNET_STAGING_STATIC_SITE_BUCKET = credentials('testnet-staging-static-website')
-        TESTNET_STATIC_SITE_BUCKET = credentials('testnet-static-website')
-        MAINNET_PR_PREVIEW_STATIC_SITE_BUCKET = credentials('mainnet-pr-previews-static-website')
-        MAINNET_STAGING_STATIC_SITE_BUCKET = credentials('mainnet-staging-static-website')
-        MAINNET_STATIC_SITE_BUCKET = credentials('mainnet-static-website')
-
-        // package building configuration
-        AFFECTED_PACKAGES = 'frontend'.split()
-        /* TODO enable once nx is implemented
-        AFFECTED_PACKAGES = """${sh(
-            returnStdout: true,
-            script: 'npx nx affected:apps --plain'
-        )}""".trim().split()
-        */
-
-        BUILD_E2E = AFFECTED_PACKAGES.contains('e2e-tests')
-        BUILD_FRONTEND = AFFECTED_PACKAGES.contains('frontend')
-    }
-    stages {
-        stage('packages:prebuild') {
-            failFast true
-
-            parallel {
-                stage('frontend:prebuild') {
-                    when {
-                        expression { env.BUILD_FRONTEND == 'true' }
-                    }
-                    steps {
-                        dir("$WORKSPACE/packages/frontend") {
-                            sh 'yarn install --frozen-lockfile'
-                            sh 'yarn lint'
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('packages:cleaned') {
-            steps {
-                milestone(100)
-            }
-        }
-
-        stage('packages:test') {
-            failFast true
-
-            when {
-                expression { env.BUILD_FRONTEND == 'true' }
-            }
-            parallel {
-                stage('frontend:prebuild:testnet-staging') {
-                    when {
-                        not { branch 'stable' }
-                    }
-                    environment {
-                        NEAR_WALLET_ENV = 'testnet_STAGING'
-                    }
-                    steps {
-                        dir("$WORKSPACE/packages/frontend") {
-                            sh 'yarn test'
+    `~?
+        `~?
                         }
                     }
                 }
